@@ -7,6 +7,6 @@ const postSchema = mongoose.Schema({
   password: String,
 });
 
-const PostMessage = mongoose.model("Register", postSchema);
+const PostMessage = mongoose.model("PostMessage", postSchema);
 
 export default PostMessage;
