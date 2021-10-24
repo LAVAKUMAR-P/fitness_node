@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv';
 import  jwt from 'jsonwebtoken';
 import  bcryptjs from 'bcrypt';
+import creatwork from "../models/creatwork.js";
 
 
 
@@ -88,6 +89,32 @@ console.log(req.body);
   } catch (error) {
     console.log(error)
     res.status(209).json({message: error});
+  }
+}
+
+/*create workout*/
+export const createworkout = async (req, res) => {
+  req.body.userid = req.userid;
+  const post = req.body;
+  console.log(req.body)
+  try {
+      // connect the database
+
+    let client = await mongoose.connect(process.env.CONNECTION_URL);
+   //save data in data base
+    const newPost = new creatwork(post);
+    console.log(newPost+" "+"new post");
+    await  newPost.save()
+    
+    
+   // Close the Connection
+   await client.disconnect();
+   console.log("connection closed")
+   res.status(201).json(newPost)
+  } catch (error) {
+    console.log(error+"creat work");
+    res.status(209).json({message: error});
+
   }
 }
 

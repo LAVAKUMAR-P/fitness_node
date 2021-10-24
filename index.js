@@ -7,6 +7,7 @@ dotenv.config();
 import postRoutes from './routes/posts.js'
 
 
+
 app.use(
     cors({
       origin: "*",
