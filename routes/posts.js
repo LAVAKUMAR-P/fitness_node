@@ -1,5 +1,5 @@
 import express from 'express';
-import { createworkout, Login, Register } from '../controllers/control.js';
+import { createworkout, deletePost, editworkout, getworkout, getworkout_edit, Login, Register } from '../controllers/control.js';
 import  jwt from 'jsonwebtoken';
 
 
@@ -41,5 +41,11 @@ function authenticate(req, res, next) {
 router.post('/register',Register)
 router.post('/login',Login)
 router.post('/createData',[authenticate],createworkout);
+router.get('/getData',[authenticate],getworkout);
+router.get('/getData/:id',[authenticate],getworkout_edit);
+router.put('/editData/:id',[authenticate],editworkout);
+router.delete('/deletData/:id',[authenticate],deletePost);
+
+
 
 export default router;
