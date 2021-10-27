@@ -1,8 +1,19 @@
 import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema({
-  email: String,
-  firstName: String,
+  email: {
+    type: String,
+    require: true,
+    unique: true,
+    max: 50,
+  },
+  firstName: {
+    type: String,
+    require: true,
+    unique: true,
+    min: 3,
+    max: 20,
+  },
   lastName: String,
   password: String,
 });

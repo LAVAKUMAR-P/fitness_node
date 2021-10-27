@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcrypt";
 import creatwork from "../models/creatwork.js";
+import Userbmi from "../models/Userbmi.js";
+import UserbmI from "../models/Userbmi.js";
 var ObjectId = mongoose.Types.ObjectId;
 dotenv.config();
 
@@ -21,8 +23,10 @@ export const Register = async (req, res) => {
     req.body.password = hash;
     const post = req.body;
     console.log(post);
-
-    //creating schma for data base
+    //check mail id is alred there or not
+    const postMessages = await PostMessage.findOne({ email: req.body.email });
+      if(!postMessages){
+         //creating schma for data base
     const newPost = new PostMessage(post);
 
     //save data in database
@@ -31,7 +35,13 @@ export const Register = async (req, res) => {
     // Close the Connection
     await client.disconnect();
     console.log("connection closed");
-    res.status(201).json(newPost);
+     return res.status(201).json(newPost);
+ }
+ await client.disconnect();
+ console.log("connection closed");
+  return res.status(409).json({
+    message: "Emailid is alredy there"
+}) 
   } catch (error) {
     res.status(209).json({ message: error });
   }
@@ -110,6 +120,31 @@ export const createworkout = async (req, res) => {
   }
 };
 
+/*create BMI*/
+export const createBmi = async (req, res) => {
+  console.log(req.body);
+  req.body.userid = req.userid;
+  const post = req.body;
+  console.log(req.body);
+  try {
+    // connect the database
+    let client = await mongoose.connect(process.env.CONNECTION_URL);
+
+    //save data in data base
+    const newPost = new UserbmI(post);
+    console.log(newPost + " " + "new post");
+    await newPost.save();
+
+    // Close the Connection
+    await client.disconnect();
+    console.log("connection closed");
+    res.status(201).json({message:"Bmi registered sucessfully"});
+  } catch (error) {
+    console.log(error + "create work");
+    res.status(209).json({ message: error });
+  }
+};
+
 /*get workout*/
 export const getworkout = async (req, res) => {
   req.body.userid = req.userid;
@@ -130,6 +165,9 @@ export const getworkout = async (req, res) => {
     res.status(209).json({ message: "something went wrong" });
   }
 };
+
+
+
 
 /*get workout based on object id*/
 export const getworkout_edit = async (req, res) => {
