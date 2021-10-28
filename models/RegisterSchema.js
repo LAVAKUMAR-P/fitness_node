@@ -16,6 +16,10 @@ const RegisterSchema = mongoose.Schema({
   },
   lastName: String,
   password: String,
+  admin: {
+    type: Boolean,
+    require: true,
+  }
 });
 
 const registerSchema = mongoose.model("registerSchema",RegisterSchema);

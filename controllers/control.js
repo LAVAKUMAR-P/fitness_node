@@ -19,6 +19,7 @@ export const Register = async (req, res) => {
     let salt = bcryptjs.genSaltSync(10);
     let hash = bcryptjs.hashSync(req.body.password, salt);
     req.body.password = hash;
+    req.body.admin=false;
     const post = req.body;
     console.log(post);
     //check mail id is alred there or not
@@ -56,9 +57,14 @@ export const Login = async (req, res) => {
 
     //get data from data base
     const registerSchemas = await registerSchema.findOne({ email: req.body.email });
+    const check = await registerSchema.find({ email: req.body.email });
+    console.log("---------------------------------------------------------------------");
+    console.log(check[0].admin);
+    console.log("---------------------------------------------------------------------");
+    
 
     let user = registerSchemas;
-
+   console.log(user);
     if (user) {
       // Hash the incoming password
       // Compare that password with user's password
@@ -67,7 +73,7 @@ export const Login = async (req, res) => {
       let matchPassword = bcryptjs.compareSync(
         req.body.password,
         user.password
-      );
+      )
       if (matchPassword) {
         // Generate JWT token
         let token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -75,6 +81,7 @@ export const Login = async (req, res) => {
         res.json({
           message: true,
           token,
+          unconditional:check[0].admin,
         });
       }
       else {
@@ -84,9 +91,16 @@ export const Login = async (req, res) => {
       })
        }
     } 
+    else {
+      console.log("pasword incorrect-------------------------------")
+      res.status(401).json({
+        message: "Username/Password is incorrect"
+    })
+     }
     // Close the Connection
     await client.disconnect();
   } catch (error) {
+    console.log(error);
     console.log("mismatch------------------------");
     res.status(401).json({
       message: "Username/Password is incorrect"

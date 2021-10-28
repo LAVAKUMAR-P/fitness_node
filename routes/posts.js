@@ -1,6 +1,9 @@
 import express from 'express';
 import { createBmi, createworkout, deletePost, editbmi, editworkout, getbmiedit, getworkout, getworkout_edit, Login, Register } from '../controllers/control.js';
 import  jwt from 'jsonwebtoken';
+import admincheck from '../Authenticate/Admin.js';
+import { Alluser } from '../controllers/AdminControl.js';
+
 
 
 const router = express.Router();
@@ -40,6 +43,7 @@ function authenticate(req, res, next) {
 
 router.post('/register',Register)
 router.post('/login',Login)
+router.get('/getalluser',[authenticate],[admincheck],Alluser)
 router.post('/createData',[authenticate],createworkout);
 router.post('/createbmi',[authenticate],createBmi);
 router.get('/getData',[authenticate],getworkout);
