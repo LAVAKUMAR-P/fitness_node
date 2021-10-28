@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const postSchema = mongoose.Schema({
+const RegisterSchema = mongoose.Schema({
   email: {
     type: String,
     require: true,
@@ -18,6 +18,6 @@ const postSchema = mongoose.Schema({
   password: String,
 });
 
-const PostMessage = mongoose.model("PostMessage", postSchema);
+const registerSchema = mongoose.model("registerSchema",RegisterSchema);
 
-export default PostMessage;
+export default registerSchema;
