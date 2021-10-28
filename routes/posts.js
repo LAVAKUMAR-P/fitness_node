@@ -2,7 +2,7 @@ import express from 'express';
 import { createBmi, createworkout, deletePost, editbmi, editworkout, getbmiedit, getworkout, getworkout_edit, Login, Register } from '../controllers/control.js';
 import  jwt from 'jsonwebtoken';
 import admincheck from '../Authenticate/Admin.js';
-import { Alluser } from '../controllers/AdminControl.js';
+import { Alluser, makeadmin } from '../controllers/AdminControl.js';
 
 
 
@@ -46,6 +46,7 @@ router.post('/login',Login)
 router.get('/getalluser',[authenticate],[admincheck],Alluser)
 router.post('/createData',[authenticate],createworkout);
 router.post('/createbmi',[authenticate],createBmi);
+router.post('/makeadmin',[authenticate],[admincheck],makeadmin);
 router.get('/getData',[authenticate],getworkout);
 router.get('/getData/:id',[authenticate],getworkout_edit);
 router.get('/getbmiedit/:id',[authenticate],getbmiedit);

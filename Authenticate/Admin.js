@@ -12,28 +12,30 @@ dotenv.config();
         // connect the database
     
         let client = await mongoose.connect(process.env.CONNECTION_URL);
+        console.log("admin mogo connected");
     
         //get data from data base
-        const check = await registerSchema.find({ userid: req.body.userid });
+        const check = await registerSchema.find({ _id: req.body.userid });
         console.log("---------------------------------------------------------------------");
-        console.log(check[0].admin);
-        console.log("---------------------------------------------------------------------");
-        if(check[0].admin){
-            next();
+        // console.log(check[0].admin);
+        console.log("hay working---------------------------------------------------------------------");
+        console.log(check);
+        let value=check[0].admin
+        if(value){
+            
          await client.disconnect();
         console.log("connection disconnected");
+            next();
         } else {
-            console.log("pasword incorrect-------------------------------")
-            res.status(403).json({
-                message: "You are not allowed to see this data"
-          })
+        console.log("pasword incorrect-------------------------------")
         await client.disconnect();
         console.log("connection disconnected");
+        res.status(401).json({ message: "You are not allowed to see this data"})
         }
       } catch (error) {
         console.log(error);
         console.log("mismatch------------------------");
-        res.status(403).json({
+        res.status(401).json({
           message: "You are not allowed to see this data"
       })
       }
