@@ -60,3 +60,27 @@ export const makeadmin = async (req, res) => {
       res.status(209).json({ message: "something went wrong" });
     }
   };
+
+/*Remove admin */ 
+export const removeadmin = async (req, res) => {
+  try {
+    // connect the database
+    let client = await mongoose.connect(process.env.CONNECTION_URL);
+
+    //update data in data base
+    const check = await registerSchema.find({email: req.body.email});
+    check[0].admin=false;
+    const post = check[0];
+    let _id=check[0]._id
+    const editPost = await registerSchema.findByIdAndUpdate( _id, post, {
+      new: true,
+    });
+    // Close the Connection
+    await client.disconnect();
+    console.log("connection closed");
+    res.status(201).json({ message: "Data updated" });
+  } catch (error) {
+    console.log(error +" "+"$edit post catch-----------------------------");
+    res.status(209).json({ message: "something went wrong" });
+  }
+};
