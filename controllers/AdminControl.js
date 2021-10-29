@@ -14,10 +14,11 @@ export const Alluser = async (req, res) => {
       // connect the database
   
       let client = await mongoose.connect(process.env.CONNECTION_URL);
-  
+       
       //get data from data base
-      let message=await registerSchema.find();
-      res.status(201).json(message);
+      let messages=await registerSchema.find();
+      res.status(201).json(messages);
+      console.log(messages);
       // Close the Connection
       await mongoose.disconnect();
 

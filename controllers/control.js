@@ -46,6 +46,7 @@ export const Register = async (req, res) => {
   }
 };
 
+
 /*log in*/
 
 export const Login = async (req, res) => {
@@ -108,11 +109,10 @@ export const Login = async (req, res) => {
   }
 };
 
-
-
 /*create workout*/
 export const createworkout = async (req, res) => {
   req.body.userid = req.userid;
+  // req.body.message.date=new Date().toLocaleDateString();
   const post = req.body;
   console.log(req.body);
   try {
@@ -133,8 +133,6 @@ export const createworkout = async (req, res) => {
     res.status(209).json({ message: error });
   }
 };
-
-
 
 /*create BMI*/
 export const createBmi = async (req, res) => {
@@ -159,15 +157,9 @@ export const createBmi = async (req, res) => {
     }) 
     }
     
-
-    
-
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
-
-   
-    
+    console.log("connection closed"); 
   } catch (error) {
     console.log("---------------------------------------------------------------------------------");
     console.log(error + "create work");
@@ -197,9 +189,6 @@ export const getworkout = async (req, res) => {
     res.status(209).json({ message: "something went wrong" });
   }
 };
-
-
-
 
 /*get workout based on object id*/
 export const getworkout_edit = async (req, res) => {
@@ -297,9 +286,6 @@ export const editbmi = async (req, res) => {
     res.status(209).json({ message: "something went wrong" });
   }
 };
-
-
-
 
 
 /*Edit workout*/
