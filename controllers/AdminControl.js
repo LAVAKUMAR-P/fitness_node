@@ -92,7 +92,7 @@ export const workout = async (req, res) => {
   req.body.userid = req.userid;
   // req.body.message.date=new Date().toLocaleDateString();
   const post = req.body;
-  console.log(req.body);
+  console.log(req.body+"----------------------------");
   try {
     // connect the database
     let client = await mongoose.connect(process.env.CONNECTION_URL);

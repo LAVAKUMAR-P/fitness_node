@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import bcryptjs from "bcrypt";
 import creatwork from "../models/creatwork.js";
 import UserbmI from "../models/Userbmi.js";
+import WorkouT from "../models/Workout.js";
 dotenv.config();
 
 /*regiser user */
@@ -167,7 +168,7 @@ export const createBmi = async (req, res) => {
   }
 };
 
-/*get workout*/
+/*get workoutdone*/
 export const getworkout = async (req, res) => {
   req.body.userid = req.userid;
   console.log(req.body);
@@ -184,6 +185,30 @@ export const getworkout = async (req, res) => {
     console.log("connection closed");
     console.log(registerSchemas);
     res.status(201).json({registerSchemas,BMIMessages});
+  } catch (error) {
+    console.log(error + "create work");
+    res.status(209).json({ message: "something went wrong" });
+  }
+};
+
+
+/*get workout and types*/
+export const workout_type = async (req, res) => {
+  req.body.userid = req.userid;
+  console.log(req.body);
+  try {
+    // connect the database
+    let client = await mongoose.connect(process.env.CONNECTION_URL);
+   
+    //Get data in data base
+    const Workouts = await WorkouT.find();
+    
+    
+    // Close the Connection
+    await client.disconnect();
+    console.log("connection closed");
+    console.log(Workouts);
+    res.status(201).json(Workouts);
   } catch (error) {
     console.log(error + "create work");
     res.status(209).json({ message: "something went wrong" });

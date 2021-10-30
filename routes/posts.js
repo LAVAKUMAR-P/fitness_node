@@ -1,44 +1,13 @@
 import express from 'express';
-import { createBmi, createworkout, deletePost, editbmi, editworkout, getbmiedit, getworkout, getworkout_edit, Login, Register } from '../controllers/control.js';
-import  jwt from 'jsonwebtoken';
-import admincheck from '../Authenticate/Admin.js';
-import { Alluser, makeadmin, removeadmin, workout } from '../controllers/AdminControl.js';
+import { createBmi, createworkout, deletePost, editbmi, editworkout, getbmiedit, getworkout, getworkout_edit, Login, Register, workout_type } from '../controllers/control.js';
+import admincheck from '../Middleware/Admin.js';
+import { Alluser, delete_workout, makeadmin, removeadmin, workout, Workout_edit, workout_id } from '../controllers/AdminControl.js';
+import authenticate from '../Middleware/Usercheck.js';
 
 
 
 const router = express.Router();
-//authondication
-function authenticate(req, res, next) {
-    try {
-    // Check if the token is present
-    // if present -> check if it is valid
-    if(req.headers.authorization){
-        jwt.verify(req.headers.authorization,process.env.JWT_SECRET,function(error,decoded){
-            if(error){
-                res.status(500).json({
-                    message: "Unauthorized"
-                })
-            }else{
-                console.log(decoded)
-                req.userid = decoded.id;
-            next()
-            }
-            
-        });
-      
-    }else{
-        res.status(401).json({
-            message: "No Token Present"
-        })
-    }
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            message: "Internal Server Error"
-        })
-    }
-    
-  }
+
 
 
 router.post('/register',Register);
@@ -49,13 +18,16 @@ router.post('/createbmi',[authenticate],createBmi);
 router.post('/makeadmin',[authenticate],[admincheck],makeadmin);
 router.post('/removeadmin',[authenticate],[admincheck], removeadmin);
 router.post('/workout',[authenticate],[admincheck],workout);
+router.get('/allworkout',[authenticate],workout_type);
 router.get('/getData',[authenticate],getworkout);
 router.get('/getData/:id',[authenticate],getworkout_edit);
+router.get('/getworkout/:id',[authenticate],[admincheck],workout_id);
 router.get('/getbmiedit/:id',[authenticate],getbmiedit);
-router.put('/editData/:id',[authenticate],editworkout);
+router.put('/editData/:id',[authenticate],[admincheck],editworkout);
+router.put('/editworkout/:id',[authenticate],Workout_edit);
 router.put('/editbmi/:id',[authenticate],editbmi);
 router.delete('/deletData/:id',[authenticate],deletePost);
-
+router.delete('/deleteworkout/:id',[authenticate],[admincheck],delete_workout);
 
 
 export default router;
