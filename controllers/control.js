@@ -23,9 +23,12 @@ export const Register = async (req, res) => {
     let salt = bcryptjs.genSaltSync(10);
     let hash = bcryptjs.hashSync(req.body.password, salt);
     req.body.password = hash;
+
+    //make user admin access false
     req.body.admin=false;
     const post = req.body;
     console.log(post);
+
     //check mail id is alred there or not
     const registerSchemas = await registerSchema.findOne({ email: req.body.email });
       if(!registerSchemas){
@@ -384,7 +387,7 @@ export const deletePost = async (req,res) =>{
 
 
 
-/*Reset password */
+/*forget password */
 
 export const forgotPassword = async (req, res) => {
   console.log(req.body.email);
@@ -418,3 +421,38 @@ export const forgotPassword = async (req, res) => {
       console.log("connection closed****");
   }
 };
+
+/*Reset password */
+
+export const resetpassword = async (req, res) => {
+  try {
+      /*cinect with DB */
+      let client = await mongoose.connect(process.env.CONNECTION_URL);
+
+      const user = await registerSchema.findById(req.params.userId);
+      if (!user) return res.status(400).send("invalid link or expired");
+
+      const token = await TokenSchema.findOne({
+          userId: user._id,
+          token: req.params.token,
+      });
+      if (!token) return res.status(400).send("Invalid link or expired");
+          //Hash password
+        let salt = bcryptjs.genSaltSync(10);
+       let hash = bcryptjs.hashSync(req.body.password, salt);
+       req.body.password = hash;
+
+      user.password = req.body.password;
+      await user.save();
+      await token.delete();
+
+      res.send("password reset sucessfully.");
+
+      await client.disconnect();
+      console.log("connection closed");
+      
+  } catch (error) {
+      res.send("An error occured");
+      console.log(error);
+  }
+}
