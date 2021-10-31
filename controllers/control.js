@@ -441,13 +441,14 @@ export const resetpassword = async (req, res) => {
       await user.save();
       await token.delete();
 
-      await mongoose.disconnect();
-      res.status(200).send("password reset sucessfully.");
-
      
-      // console.log("connection closed");
+      res.status(200).send("password reset sucessfully.");
+      await mongoose.disconnect();
+     
+      console.log("connection closed");
       
   } catch (error) {
+    console.log(error+"    "+"reset password");
       res.status(406).send("An error occured");
       // console.log(error);
   }
