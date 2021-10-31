@@ -404,9 +404,10 @@ export const forgotPassword = async (req, res) => {
 
       const link = `${process.env.BASE_URL}/password-reset/${user._id}/${token.token}`;
       await sendEmail(user.email, "Password reset",`your rest password link : ${link}` );
-
-      res.send("password reset link sent to your email account");
+      
       await client.disconnect();
+      res.send("password reset link sent to your email account");
+     
       // console.log("connection closed");
   } catch (error) {
       res.send("An error occured");
@@ -440,9 +441,10 @@ export const resetpassword = async (req, res) => {
       await user.save();
       await token.delete();
 
+      await client.disconnect();
       res.send("password reset sucessfully.");
 
-      await client.disconnect();
+     
       // console.log("connection closed");
       
   } catch (error) {
