@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBmi, createworkout, deletePost, editbmi, editworkout, getbmiedit, getworkout, getworkout_edit, Login, Register, workout_type } from '../controllers/control.js';
+import { createBmi, createworkout, deletePost, editbmi, editworkout, forgotPassword, getbmiedit, getworkout, getworkout_edit, Login, Register, workout_type } from '../controllers/control.js';
 import admincheck from '../Middleware/Admin.js';
 import { Alluser, delete_workout, makeadmin, removeadmin, workout, Workout_edit, workout_id } from '../controllers/AdminControl.js';
 import authenticate from '../Middleware/Usercheck.js';
@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.post('/register',Register);
 router.post('/login',Login);
+router.post('/forgetpassword',forgotPassword)
 router.get('/getalluser',[authenticate],[admincheck],Alluser);
 router.post('/createData',[authenticate],createworkout);
 router.post('/createbmi',[authenticate],createBmi);
@@ -28,6 +29,7 @@ router.put('/editworkout/:id',[authenticate],Workout_edit);
 router.put('/editbmi/:id',[authenticate],editbmi);
 router.delete('/deletData/:id',[authenticate],deletePost);
 router.delete('/deleteworkout/:id',[authenticate],[admincheck],delete_workout);
+
 
 
 export default router;

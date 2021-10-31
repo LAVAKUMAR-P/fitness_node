@@ -12,14 +12,26 @@ const RegisterSchema = mongoose.Schema({
     require: true,
     unique: true,
     min: 3,
+    max: 30,
+  },
+  lastName: {
+    type: String,
+    require: true,
+    unique: true,
+    min: 3,
     max: 20,
   },
-  lastName: String,
-  password: String,
+  password: {
+    type: String,
+    require: true,
+    unique: true,
+    min: 3,
+    max: 30,
+  },
   admin: {
     type: Boolean,
     require: true,
-  }
+  },
 });
 
 const registerSchema = mongoose.model("registerSchema",RegisterSchema);

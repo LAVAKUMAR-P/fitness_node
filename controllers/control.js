@@ -6,6 +6,9 @@ import bcryptjs from "bcrypt";
 import creatwork from "../models/creatwork.js";
 import UserbmI from "../models/Userbmi.js";
 import WorkouT from "../models/Workout.js";
+import sendEmail from "../utils/Email.js";
+import TokenSchema from "../models/token.js";
+import crypto from "crypto";
 dotenv.config();
 
 /*regiser user */
@@ -377,3 +380,41 @@ export const deletePost = async (req,res) =>{
   }
   
 }
+
+
+
+
+/*Reset password */
+
+export const forgotPassword = async (req, res) => {
+  console.log(req.body.email);
+  try {
+    let client = await mongoose.connect(process.env.CONNECTION_URL);
+      /*check user is available */
+      
+      const user = await registerSchema.findOne({ email: req.body.email });
+      if (!user)
+          return res.status(400).send("user with given email doesn't exist");
+
+      let token = await TokenSchema.findOne({ userId: user._id });
+
+      if (!token) {
+          token = await new TokenSchema({
+              userId: user._id,
+              token: crypto.randomBytes(32).toString("hex"),
+          }).save();
+      }
+
+      const link = `${process.env.BASE_URL}/password-reset/${user._id}/${token.token}`;
+      await sendEmail(user.email, "Password reset",`your rest password link : ${link}` );
+
+      res.send("password reset link sent to your email account");
+      await client.disconnect();
+      console.log("connection closed");
+  } catch (error) {
+      res.send("An error occured");
+      console.log(error);
+      await client.disconnect();
+      console.log("connection closed****");
+  }
+};
