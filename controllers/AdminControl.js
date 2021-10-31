@@ -195,7 +195,7 @@ export const delete_workout = async (req,res) =>{
             }
             else{
            
-              await res.status(201).send("Data with this id deleted");
+              res.status(201).json("Deleted");
               await client.disconnect();
              
             }
