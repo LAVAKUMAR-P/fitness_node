@@ -406,11 +406,11 @@ export const forgotPassword = async (req, res) => {
       await sendEmail(user.email, "Password reset",`your rest password link : ${link}` );
 
       await mongoose.disconnect();
-      res.send("password reset link sent to your email account");
+      res.status(200).send("password reset link sent to your email account");
      
       // console.log("connection closed");
   } catch (error) {
-      res.send("An error occured");
+      res.status(406).send("An error occured");
       console.log(error);
       await mongoose.disconnect();
       console.log("connection closed****");
@@ -431,7 +431,7 @@ export const resetpassword = async (req, res) => {
           userId: user._id,
           token: req.params.token,
       });
-      if (!token) return res.status(400).send("Invalid link or expired");
+      if (!token) return res.status(406).send("Invalid link or expired");
           //Hash password
         let salt = bcryptjs.genSaltSync(10);
        let hash = bcryptjs.hashSync(req.body.password, salt);
@@ -442,13 +442,13 @@ export const resetpassword = async (req, res) => {
       await token.delete();
 
       await mongoose.disconnect();
-      res.send("password reset sucessfully.");
+      res.status(200).send("password reset sucessfully.");
 
      
       // console.log("connection closed");
       
   } catch (error) {
-      res.send("An error occured");
+      res.status(406).send("An error occured");
       // console.log(error);
   }
 }
