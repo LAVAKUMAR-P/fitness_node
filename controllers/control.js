@@ -410,7 +410,7 @@ export const forgotPassword = async (req, res) => {
      
       // console.log("connection closed");
   } catch (error) {
-      res.status(406).send("An error occured");
+      res.status(406).send("An error occured"+error);
       console.log(error);
       await mongoose.disconnect();
       console.log("connection closed****");
