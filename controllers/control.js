@@ -13,7 +13,7 @@ dotenv.config();
 
 /*regiser user */
 export const Register = async (req, res) => {
-  console.log(req.body);
+ 
   try {
     // connect the database
 
@@ -27,7 +27,7 @@ export const Register = async (req, res) => {
     //make user admin access false
     req.body.admin=false;
     const post = req.body;
-    console.log(post);
+    
 
     //check mail id is alred there or not
     const registerSchemas = await registerSchema.findOne({ email: req.body.email });
@@ -57,7 +57,7 @@ export const Register = async (req, res) => {
 /*log in*/
 
 export const Login = async (req, res) => {
-  console.log(req.body);
+ 
   try {
     // connect the database
 
@@ -66,18 +66,15 @@ export const Login = async (req, res) => {
     //get data from data base
     const registerSchemas = await registerSchema.findOne({ email: req.body.email });
     const check = await registerSchema.find({ email: req.body.email });
-    console.log("---------------------------------------------------------------------");
-    console.log(check[0].admin);
-    console.log("---------------------------------------------------------------------");
+   
     
 
     let user = registerSchemas;
-   console.log(user);
+ 
     if (user) {
       // Hash the incoming password
       // Compare that password with user's password
-      console.log(req.body);
-      console.log(user.password);
+  
       let matchPassword = bcryptjs.compareSync(
         req.body.password,
         user.password
@@ -85,7 +82,7 @@ export const Login = async (req, res) => {
       if (matchPassword) {
         // Generate JWT token
         let token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        console.log(token + "token-----------------------------------------");
+     
         res.json({
           message: true,
           token,
@@ -93,14 +90,14 @@ export const Login = async (req, res) => {
         });
       }
       else {
-        console.log("pasword incorrect-------------------------------")
+      
         res.status(401).json({
           message: "Username/Password is incorrect"
       })
        }
     } 
     else {
-      console.log("pasword incorrect-------------------------------")
+  
       res.status(401).json({
         message: "Username/Password is incorrect"
     })
@@ -109,7 +106,7 @@ export const Login = async (req, res) => {
     await client.disconnect();
   } catch (error) {
     console.log(error);
-    console.log("mismatch------------------------");
+    // console.log("mismatch------------------------");
     res.status(401).json({
       message: "Username/Password is incorrect"
   })
@@ -121,19 +118,19 @@ export const createworkout = async (req, res) => {
   req.body.userid = req.userid;
   // req.body.message.date=new Date().toLocaleDateString();
   const post = req.body;
-  console.log(req.body);
+ 
   try {
     // connect the database
     let client = await mongoose.connect(process.env.CONNECTION_URL);
 
     //save data in data base
     const newPost = new creatwork(post);
-    console.log(newPost + " " + "new post");
+
     await newPost.save();
 
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
+
     res.status(201).json(newPost);
   } catch (error) {
     console.log(error + "create work");
@@ -143,10 +140,10 @@ export const createworkout = async (req, res) => {
 
 /*create BMI*/
 export const createBmi = async (req, res) => {
-  console.log(req.body);
+
   req.body.userid = req.userid;
   const post = req.body;
-  console.log(req.body);
+
   try {
     // connect the database
     let client = await mongoose.connect(process.env.CONNECTION_URL);
@@ -155,7 +152,7 @@ export const createBmi = async (req, res) => {
     const bmi = await UserbmI.findOne({userid: req.userid });
     if(!bmi){
     const newPost = new UserbmI(post);
-    console.log(newPost + " " + "new post");
+  
     await newPost.save();
     await res.status(201).json({message:"Bmi registered sucessfully"});
     }else{
@@ -166,10 +163,10 @@ export const createBmi = async (req, res) => {
     
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed"); 
+  
   } catch (error) {
-    console.log("---------------------------------------------------------------------------------");
-    console.log(error + "create work");
+    // console.log("---------------------------------------------------------------------------------");
+    // console.log(error + "create work");
     res.json({ message: "something went wrong" });
   }
 };
@@ -177,7 +174,7 @@ export const createBmi = async (req, res) => {
 /*get workoutdone*/
 export const getworkout = async (req, res) => {
   req.body.userid = req.userid;
-  console.log(req.body);
+ 
   try {
     // connect the database
     let client = await mongoose.connect(process.env.CONNECTION_URL);
@@ -188,11 +185,10 @@ export const getworkout = async (req, res) => {
     
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
-    console.log(registerSchemas);
+
     res.status(201).json({registerSchemas,BMIMessages});
   } catch (error) {
-    console.log(error + "create work");
+    // console.log(error + "create work");
     res.status(209).json({ message: "something went wrong" });
   }
 };
@@ -201,7 +197,7 @@ export const getworkout = async (req, res) => {
 /*get workout and types*/
 export const workout_type = async (req, res) => {
   req.body.userid = req.userid;
-  console.log(req.body);
+
   try {
     // connect the database
     let client = await mongoose.connect(process.env.CONNECTION_URL);
@@ -212,7 +208,7 @@ export const workout_type = async (req, res) => {
     
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
+
     console.log(Workouts);
     res.status(201).json(Workouts);
   } catch (error) {
@@ -231,16 +227,16 @@ export const getworkout_edit = async (req, res) => {
     //query
     creatwork.findById(id, async (error, resulte) => {
       if (error) {
-        console.log(error + "error from find id");
+    
         res.status(209).json({ message: "invaild data" });
         await client.disconnect();
-        console.log("connection closed");
+ 
       } else {
-        console.log(resulte);
+      
         if (resulte === null) {
           res.status(209).json({ message: "invaild data" });
           await client.disconnect();
-          console.log("connection closed from else");
+     
         } else {
           res.status(201).json(resulte);
           await client.disconnect();
@@ -265,12 +261,12 @@ export const getbmiedit = async (req, res) => {
     //query
     UserbmI.findById(id, async (error, resulte) => {
       if (error) {
-        console.log(error + "error from find id");
+  
         res.status(209).json({ message: "invaild data" });
         await client.disconnect();
-        console.log("connection closed");
+  
       } else {
-        console.log(resulte);
+     
         if (resulte === null) {
           res.status(209).json({ message: "invaild data" });
           await client.disconnect();
@@ -301,19 +297,17 @@ export const editbmi = async (req, res) => {
     console.log(post);
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(404).send("Data with this id not avalilable");
-    }else{
-      console.log("Data availabale----------------------------------------------------------------");
     }
     const editPost = await UserbmI.findByIdAndUpdate(_id, post, {
       new: true,
     });
-    console.log("edited ---------------------------------------");
+ 
     // Close the Connection
     await client.disconnect();
     console.log("connection closed");
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
-    console.log(error +" "+"$edit post catch-----------------------------");
+    // console.log(error +" "+"$edit post catch-----------------------------");
     res.status(209).json({ message: "something went wrong" });
   }
 };
@@ -328,16 +322,16 @@ export const editworkout = async (req, res) => {
     //update data in data base
     const { id: _id } = req.params;
     const post = req.body;
-    console.log(post);
+
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(404).send("Data with this id not avalilable");
     }else{
-      console.log("Data availabale----------------------------------------------------------------");
+      // console.log("Data availabale----------------------------------------------------------------");
     }
     const editPost = await creatwork.findByIdAndUpdate(_id, post, {
       new: true,
     });
-    console.log("edited ---------------------------------------");
+   
     // Close the Connection
     await client.disconnect();
     console.log("connection closed");
@@ -390,7 +384,7 @@ export const deletePost = async (req,res) =>{
 /*forget password */
 
 export const forgotPassword = async (req, res) => {
-  console.log(req.body.email);
+ 
   try {
     let client = await mongoose.connect(process.env.CONNECTION_URL);
       /*check user is available */
@@ -413,7 +407,7 @@ export const forgotPassword = async (req, res) => {
 
       res.send("password reset link sent to your email account");
       await client.disconnect();
-      console.log("connection closed");
+      // console.log("connection closed");
   } catch (error) {
       res.send("An error occured");
       console.log(error);
@@ -449,10 +443,10 @@ export const resetpassword = async (req, res) => {
       res.send("password reset sucessfully.");
 
       await client.disconnect();
-      console.log("connection closed");
+      // console.log("connection closed");
       
   } catch (error) {
       res.send("An error occured");
-      console.log(error);
+      // console.log(error);
   }
 }

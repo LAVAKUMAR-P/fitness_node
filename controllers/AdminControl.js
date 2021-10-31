@@ -10,7 +10,7 @@ dotenv.config();
 
 /*to see all user details */
 export const Alluser = async (req, res) => {
-    console.log(req.body);
+
     try {
       // connect the database
   
@@ -19,7 +19,7 @@ export const Alluser = async (req, res) => {
       //get data from data base
       let messages=await registerSchema.find();
       res.status(201).json(messages);
-      console.log(messages);
+      
       // Close the Connection
       await mongoose.disconnect();
 
@@ -36,10 +36,7 @@ export const Alluser = async (req, res) => {
 
  /*make as admin */ 
 export const makeadmin = async (req, res) => {
-    console.log("----------------------------------------------------------------------------------------");
-    console.log("makeadmin process start"+"=>=>=>=>=>=>=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    console.log(req.body.email);
-    console.log("----------------------------------------------------------------------------------------");
+    
     try {
       // connect the database
       let client = await mongoose.connect(process.env.CONNECTION_URL);
@@ -52,10 +49,10 @@ export const makeadmin = async (req, res) => {
       const editPost = await registerSchema.findByIdAndUpdate( _id, post, {
         new: true,
       });
-      console.log("edited ---------------------------------------");
+     
       // Close the Connection
       await client.disconnect();
-      console.log("connection closed");
+    
       res.status(201).json({ message: "Data updated" });
     } catch (error) {
       console.log(error +" "+"$edit post catch-----------------------------");
@@ -79,7 +76,7 @@ export const removeadmin = async (req, res) => {
     });
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
+  
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
     console.log(error +" "+"$edit post catch-----------------------------");
@@ -92,19 +89,19 @@ export const workout = async (req, res) => {
   req.body.userid = req.userid;
   // req.body.message.date=new Date().toLocaleDateString();
   const post = req.body;
-  console.log(req.body+"----------------------------");
+ 
   try {
     // connect the database
     let client = await mongoose.connect(process.env.CONNECTION_URL);
 
     //save data in data base
     const newPost = new WorkouT(post);
-    console.log(newPost + " " + "new post");
+
     await newPost.save();
 
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
+ 
     res.status(201).json(newPost);
   } catch (error) {
     console.log(error + "create work");
@@ -125,17 +122,17 @@ export const workout_id = async (req, res) => {
         console.log(error + "error from find id");
         res.status(209).json({ message: "invaild data" });
         await client.disconnect();
-        console.log("connection closed");
+    
       } else {
-        console.log(resulte);
+   
         if (resulte === null) {
           res.status(209).json({ message: "invaild data" });
           await client.disconnect();
-          console.log("connection closed from else");
+          // console.log("connection closed from else");
         } else {
           res.status(201).json(resulte);
           await client.disconnect();
-          console.log("connection closed from else");
+          // console.log("connection closed from else");
         }
       }
     });
@@ -155,7 +152,7 @@ export const Workout_edit = async (req, res) => {
     //update data in data base
     const { id: _id } = req.params;
     const post = req.body;
-    console.log(post);
+   
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(404).send("Data with this id not avalilable");
     }else{
@@ -164,10 +161,10 @@ export const Workout_edit = async (req, res) => {
     const editPost = await WorkouT.findByIdAndUpdate(_id, post, {
       new: true,
     });
-    console.log("edited ---------------------------------------");
+    // console.log("edited ---------------------------------------");
     // Close the Connection
     await client.disconnect();
-    console.log("connection closed");
+  
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
     console.log(error +" "+"$edit post catch-----------------------------");
@@ -188,7 +185,7 @@ export const delete_workout = async (req,res) =>{
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(404).send("Data with this id not avalilable");
   }else{
-    console.log("Data availabale----------------------------------------------------------------");
+    // console.log("Data availabale----------------------------------------------------------------");
   }
  
 
@@ -197,10 +194,10 @@ export const delete_workout = async (req,res) =>{
               console.log(error +"error from findidand remove----------------------------");
             }
             else{
-              console.log(Deleteddata);
+           
               await res.status(201).send("Data with this id deleted");
               await client.disconnect();
-              console.log("database disconected")
+             
             }
    })
  

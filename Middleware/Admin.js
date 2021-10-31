@@ -26,7 +26,7 @@ dotenv.config();
             next();
         } else {
         await client.disconnect();
-        console.log("connection disconnected");
+     
         res.status(401).json({ message: "You are not allowed to see this data"})
         }
       } catch (error) {
