@@ -404,8 +404,8 @@ export const forgotPassword = async (req, res) => {
 
       const link = `${process.env.BASE_URL}/password-reset/${user._id}/${token.token}`;
       await sendEmail(user.email, "Password reset",`your rest password link : ${link}` );
-      
-      await client.disconnect();
+
+      await mongoose.disconnect();
       res.send("password reset link sent to your email account");
      
       // console.log("connection closed");
@@ -441,7 +441,7 @@ export const resetpassword = async (req, res) => {
       await user.save();
       await token.delete();
 
-      await client.disconnect();
+      await mongoose.disconnect();
       res.send("password reset sucessfully.");
 
      
