@@ -39,11 +39,11 @@ export const Register = async (req, res) => {
     await newPost.save();
 
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
     console.log("connection closed");
      return res.status(201).json(newPost);
  }
- await client.disconnect();
+ await mongoose.disconnect();
  console.log("connection closed");
   return res.status(409).json({
     message: "Emailid is alredy there"
@@ -103,7 +103,7 @@ export const Login = async (req, res) => {
     })
      }
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
   } catch (error) {
     console.log(error);
     // console.log("mismatch------------------------");
@@ -129,7 +129,7 @@ export const createworkout = async (req, res) => {
     await newPost.save();
 
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
 
     res.status(201).json(newPost);
   } catch (error) {
@@ -162,7 +162,7 @@ export const createBmi = async (req, res) => {
     }
     
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
   
   } catch (error) {
     // console.log("---------------------------------------------------------------------------------");
@@ -184,7 +184,7 @@ export const getworkout = async (req, res) => {
     const BMIMessages = await  UserbmI.find({ userid: req.body.userid });
     
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
 
     res.status(201).json({registerSchemas,BMIMessages});
   } catch (error) {
@@ -207,7 +207,7 @@ export const workout_type = async (req, res) => {
     
     
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
 
     console.log(Workouts);
     res.status(201).json(Workouts);
@@ -229,17 +229,17 @@ export const getworkout_edit = async (req, res) => {
       if (error) {
     
         res.status(209).json({ message: "invaild data" });
-        await client.disconnect();
+        await mongoose.disconnect();
  
       } else {
       
         if (resulte === null) {
           res.status(209).json({ message: "invaild data" });
-          await client.disconnect();
+          await mongoose.disconnect();
      
         } else {
           res.status(201).json(resulte);
-          await client.disconnect();
+          await mongoose.disconnect();
           console.log("connection closed from else");
         }
       }
@@ -263,17 +263,17 @@ export const getbmiedit = async (req, res) => {
       if (error) {
   
         res.status(209).json({ message: "invaild data" });
-        await client.disconnect();
+        await mongoose.disconnect();
   
       } else {
      
         if (resulte === null) {
           res.status(209).json({ message: "invaild data" });
-          await client.disconnect();
+          await mongoose.disconnect();
           console.log("connection closed from else");
         } else {
           res.status(201).json(resulte);
-          await client.disconnect();
+          await mongoose.disconnect();
           console.log("connection closed from else");
         }
       }
@@ -303,7 +303,7 @@ export const editbmi = async (req, res) => {
     });
  
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
     console.log("connection closed");
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
@@ -333,7 +333,7 @@ export const editworkout = async (req, res) => {
     });
    
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
     console.log("connection closed");
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
@@ -366,7 +366,7 @@ export const deletePost = async (req,res) =>{
             else{
               console.log(Deleteddata);
               await res.status(201).send("Data with this id deleted");
-              await client.disconnect();
+              await mongoose.disconnect();
               console.log("database disconected")
             }
    })
@@ -412,7 +412,7 @@ export const forgotPassword = async (req, res) => {
   } catch (error) {
       res.send("An error occured");
       console.log(error);
-      await client.disconnect();
+      await mongoose.disconnect();
       console.log("connection closed****");
   }
 };

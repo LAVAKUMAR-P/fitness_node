@@ -51,7 +51,7 @@ export const makeadmin = async (req, res) => {
       });
      
       // Close the Connection
-      await client.disconnect();
+      await mongoose.disconnect();
     
       res.status(201).json({ message: "Data updated" });
     } catch (error) {
@@ -75,7 +75,7 @@ export const removeadmin = async (req, res) => {
       new: true,
     });
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
   
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
@@ -100,7 +100,7 @@ export const workout = async (req, res) => {
     await newPost.save();
 
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
  
     res.status(201).json(newPost);
   } catch (error) {
@@ -121,17 +121,17 @@ export const workout_id = async (req, res) => {
       if (error) {
         console.log(error + "error from find id");
         res.status(209).json({ message: "invaild data" });
-        await client.disconnect();
+        await mongoose.disconnect();
     
       } else {
    
         if (resulte === null) {
           res.status(209).json({ message: "invaild data" });
-          await client.disconnect();
+          await mongoose.disconnect();
           // console.log("connection closed from else");
         } else {
           res.status(201).json(resulte);
-          await client.disconnect();
+          await mongoose.disconnect();
           // console.log("connection closed from else");
         }
       }
@@ -163,7 +163,7 @@ export const Workout_edit = async (req, res) => {
     });
     // console.log("edited ---------------------------------------");
     // Close the Connection
-    await client.disconnect();
+    await mongoose.disconnect();
   
     res.status(201).json({ message: "Data updated" });
   } catch (error) {
@@ -196,7 +196,7 @@ export const delete_workout = async (req,res) =>{
             else{
            
               res.status(201).json("Deleted");
-              await client.disconnect();
+              await mongoose.disconnect();
              
             }
    })
