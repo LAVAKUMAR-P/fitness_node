@@ -10,27 +10,23 @@ const RegisterSchema = mongoose.Schema({
   firstName: {
     type: String,
     require: true,
-    unique: true,
     min: 3,
     max: 30,
   },
   lastName: {
     type: String,
     require: true,
-    unique: true,
     min: 3,
     max: 20,
   },
   password: {
     type: String,
     require: true,
-    unique: true,
     min: 3,
     max: 30,
   },
   admin: {
     type: Boolean,
-    require: true,
   },
 });
 

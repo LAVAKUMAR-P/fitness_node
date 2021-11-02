@@ -31,6 +31,7 @@ export const Register = async (req, res) => {
 
     //check mail id is alred there or not
     const registerSchemas = await registerSchema.findOne({ email: req.body.email });
+   
       if(!registerSchemas){
          //creating schma for data base
     const newPost = new registerSchema(post);
@@ -49,7 +50,8 @@ export const Register = async (req, res) => {
     message: "Emailid is alredy there"
 }) 
   } catch (error) {
-    res.status(209).json({ message: error });
+    console.log(error);
+    res.status(409).json({ message: error });
   }
 };
 
