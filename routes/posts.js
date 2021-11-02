@@ -24,7 +24,7 @@ router.get('/getData',[authenticate],getworkout);
 router.get('/getData/:id',[authenticate],getworkout_edit);
 router.get('/getworkout/:id',[authenticate],[admincheck],workout_id);
 router.get('/getbmiedit/:id',[authenticate],getbmiedit);
-router.put('/editData/:id',[authenticate],[admincheck],editworkout);
+router.put('/editData/:id',[authenticate],editworkout);
 router.put('/editworkout/:id',[authenticate],Workout_edit);
 router.put('/editbmi/:id',[authenticate],editbmi);
 router.delete('/deletData/:id',[authenticate],deletePost);
